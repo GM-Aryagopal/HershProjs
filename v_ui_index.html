@@ -3,24 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <title>Be My Valentine 💖</title>
+
   <style>
     body {
       height: 100vh;
+      margin: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
       font-family: 'Poppins', sans-serif;
       overflow: hidden;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffd1ff, #cdb4db);
+      background-size: 400% 400%;
+      animation: gradient 12s ease infinite;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
     }
 
     .card {
+      position: relative;
+      z-index: 2;
       background: white;
       padding: 40px;
       border-radius: 20px;
       text-align: center;
       box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      width: 350px;
+      width: 360px;
     }
 
     h1 {
@@ -66,13 +88,33 @@
     }
 
     .love-message {
-      font-size: 20px;
+      font-size: 18px;
       color: #ff4d6d;
       margin-top: 20px;
+      line-height: 1.4;
+    }
+
+    .trail-heart {
+      position: fixed;
+      pointer-events: none;
+      animation: fade 1s forwards;
+      font-size: 16px;
+      z-index: 1;
+    }
+
+    @keyframes fade {
+      to {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
     }
   </style>
 </head>
+
 <body>
+
+  <!-- Floating Hearts Canvas -->
+  <canvas id="hearts"></canvas>
 
   <div class="card">
     <h1>Hey Love 💕</h1>
@@ -86,12 +128,19 @@
     <div id="message" class="love-message hidden">
       💘 Yayyyy! 💘 <br><br>
       You just made me the happiest person ever.  
-      I can’t wait to make this Valentine’s Day special with you ❤️
-      I know that you are angry with me my kutti, but this is what I was working on, what happened yesterday was just that I wasn't feeling well and didn't realize my phone re. And kanna pls see it from this angle that it hasn't happened to you as well in the past right when I tried reaching Sathvik and everyone. Pls understand it from my lens as well. I love you and I really hope we have an amazing year ahead!!!! Looking forward to slaying together my loveshhhhh!
+      I can’t wait to make this Valentine’s Day special with you ❤️<br><br>
+
+      I know that you are angry with me my kutti, but this is what I was working on.  
+      What happened yesterday was just that I wasn’t feeling well and didn’t realize my phone.  
+      Please try to see it from my lens too — it has happened before, right when I tried reaching Sathvik and everyone.  
+      <br><br>
+      I love you endlessly and I really hope we have an amazing year ahead.  
+      Looking forward to slaying together, my loveshhhhh 💕
     </div>
   </div>
 
   <script>
+    /* YES / NO logic */
     const noBtn = document.getElementById("no");
     const yesBtn = document.getElementById("yes");
     const message = document.getElementById("message");
@@ -99,7 +148,7 @@
 
     noBtn.addEventListener("mouseover", () => {
       const x = Math.random() * 250 - 125;
-      const y = Math.random() * 100 - 50;
+      const y = Math.random() * 120 - 60;
       noBtn.style.transform = `translate(${x}px, ${y}px)`;
     });
 
@@ -107,6 +156,58 @@
       buttons.classList.add("hidden");
       message.classList.remove("hidden");
     });
+
+    /* Cursor trail hearts */
+    document.addEventListener("mousemove", e => {
+      const heart = document.createElement("div");
+      heart.className = "trail-heart";
+      heart.textContent = "💖";
+      heart.style.left = e.clientX + "px";
+      heart.style.top = e.clientY + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 1000);
+    });
+
+    /* Floating hearts canvas */
+    const canvas = document.getElementById("hearts");
+    const ctx = canvas.getContext("2d");
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    const hearts = Array.from({ length: 35 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 8 + 6,
+      speed: Math.random() * 0.6 + 0.3
+    }));
+
+    function drawHeart(x, y, s) {
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.bezierCurveTo(x - s, y - s, x - s * 2, y + s / 2, x, y + s * 2);
+      ctx.bezierCurveTo(x + s * 2, y + s / 2, x + s, y - s, x, y);
+      ctx.fillStyle = "#ff4d6d";
+      ctx.fill();
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hearts.forEach(h => {
+        drawHeart(h.x, h.y, h.size);
+        h.y -= h.speed;
+        if (h.y < -20) {
+          h.y = canvas.height + 20;
+          h.x = Math.random() * canvas.width;
+        }
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
   </script>
 
 </body>
