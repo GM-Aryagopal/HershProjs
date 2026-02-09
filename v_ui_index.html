@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Be My Valentine 💖</title>
+  <style>
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      width: 350px;
+    }
+
+    h1 {
+      color: #ff4d6d;
+    }
+
+    p {
+      font-size: 18px;
+    }
+
+    .buttons {
+      margin-top: 30px;
+      position: relative;
+      height: 100px;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      position: absolute;
+      transition: 0.3s;
+    }
+
+    #yes {
+      background-color: #ff4d6d;
+      color: white;
+      left: 50%;
+      transform: translateX(-110%);
+    }
+
+    #no {
+      background-color: #ccc;
+      color: black;
+      left: 50%;
+      transform: translateX(10%);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .love-message {
+      font-size: 20px;
+      color: #ff4d6d;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Hey Love 💕</h1>
+    <p>Will you be my Valentine?</p>
+
+    <div class="buttons">
+      <button id="yes">YES 💖</button>
+      <button id="no">NO 💔</button>
+    </div>
+
+    <div id="message" class="love-message hidden">
+      💘 Yayyyy! 💘 <br><br>
+      You just made me the happiest person ever.  
+      I can’t wait to make this Valentine’s Day special with you ❤️
+      I know that you are angry with me my kutti, but this is what I was working on, what happened yesterday was just that I wasn't feeling well and didn't realize my phone re. And kanna pls see it from this angle that it hasn't happened to you as well in the past right when I tried reaching Sathvik and everyone. Pls understand it from my lens as well. I love you and I really hope we have an amazing year ahead!!!! Looking forward to slaying together my loveshhhhh!
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const message = document.getElementById("message");
+    const buttons = document.querySelector(".buttons");
+
+    noBtn.addEventListener("mouseover", () => {
+      const x = Math.random() * 250 - 125;
+      const y = Math.random() * 100 - 50;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    yesBtn.addEventListener("click", () => {
+      buttons.classList.add("hidden");
+      message.classList.remove("hidden");
+    });
+  </script>
+
+</body>
+</html>
